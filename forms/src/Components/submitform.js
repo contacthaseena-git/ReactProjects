@@ -11,20 +11,49 @@ export class submitform extends Component {
          contact:"",
          gender:"",
          subject:[],
-         choice:""
+         choice:"",
+         about:""
+
       }
     }
   
     Handlechange=(e)=>{
-       this.setState({[e.target.name]:e.target.value})
+      const { name, value, type, checked } = e.target;
+
+        // For checkboxes (multiple selection)
+        if (type === "checkbox") {
+            let subjects = [...this.state.subject];
+
+            if (checked) {
+                subjects.push(value);
+            } else {
+                subjects = subjects.filter((item) => item !== value);
+            }
+
+            this.setState({ subject: subjects });
+        }
+        // For all other inputs
+        else {
+            this.setState({ [name]: value });
+        }
     }
     handleReset = () => {
-        // Reset all state variables here
-      
+       this.setState({
+            firstname: "",
+            lastname: "",
+            email: "",
+            contact: "",
+            gender: "",
+            subject: [],
+            choice: "",
+            about: ""
+        });
     };
     handleSubmit = (e) => {
         e.preventDefault();
-       
+        console.log("Form Submitted: ", this.state);
+        alert("Form Submitted! Check console.");
+   
       
         // Add your form submission logic here
     };
@@ -64,46 +93,42 @@ export class submitform extends Component {
       </div>
       <div>
         <label>Subject</label>
-        <input type="checkbox" name="subject" value="Maths" checked={this.state.subject==="Maths"} onChange={this.Handlechange}/>Maths
-      <input type="checkbox" name="subject" value="English" checked={this.state.subject==="English"} onChange={this.Handlechange}/>English
-    
-      </div>
-      <div>
+   <input 
+  type="checkbox" 
+  name="subject" 
+  value="Maths" 
+  checked={this.state.subject.includes("Maths")} 
+  onChange={this.Handlechange}
+/> Maths
+
+<input 
+  type="checkbox" 
+  name="subject" 
+  value="English" 
+  checked={this.state.subject.includes("English")} 
+  onChange={this.Handlechange}
+/> English
+</div>
+    <div>
         <label>Upload Resume</label>
         <input type="file"></input>
       </div>
       <div>
         <label>Select your choice</label>
-        <select value={this.state.choice} onChange={this.Handlechange}>
+        <select value={this.state.choice} name="choice" onChange={this.Handlechange}>
           <option value="">Select a Value</option>
           <option value="apple">apple</option>
           <option value="banana">banana</option>
         </select>
       </div>
-       <textarea
-                        name="about"
-                        id="about"
-                        cols="30"
-                        rows="10"
-                        onChange={this.Handlechange}
-                        
-                        placeholder="About your self"
-                        required
-                    ></textarea>
-                    <button
-                        type="reset"
-                        value="reset"
-                        onClick={this.handleReset}
-                    >
-                        Reset
-                    </button>
-                    <button
-                        type="submit"
-                        value="Submit"
-                        onClick={this.handleSubmit}
-                    >
-                        Submit
-                    </button>
+      <div>
+         <label>About yoursef:</label>
+       
+         <textarea name="about" value={this.state.about} id="about" cols="30" rows="10" onChange={this.Handlechange} placeholder="About your self" required></textarea>
+      
+      </div>
+       <button type="reset" value="reset" onClick={this.handleReset} > Reset</button>
+        <button type="submit" value="Submit" onClick={this.handleSubmit}> Submit</button>
       </form>
       </fieldset>
       </div>
